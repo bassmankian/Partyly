@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "875524811620",
+    "project_id": "partyly-ef121",
+    "storage_bucket": "partyly-ef121.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:875524811620:android:a7f42103ca54c81df4e871",
+        "android_client_info": {
+          "package_name": "com.example.partyly_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyDxtkpUMZZnZdlc4yg8Za0mz5N8OUnP4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
