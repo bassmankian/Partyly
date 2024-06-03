@@ -1,14 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:partyly_app/common/app_colors.dart';
+import 'package:partyly_app/functions/firebase-firestore.dart';
 import 'package:partyly_app/functions/firebase_auth.dart';
+import 'package:partyly_app/models/event-model.dart';
 import 'package:partyly_app/widgets/category_bar.dart';
 import 'package:partyly_app/widgets/event_card.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   HomePage({super.key});
   static const String pageRoute = '/homePage';
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final _authService = FirebaseAuthService();
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _fetchEvents();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +36,13 @@ class HomePage extends StatelessWidget {
             // fit: BoxFit.cover,
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                // Main banner for asdvertisment
-                Container(
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              // Main banner for asdvertisment
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Container(
                   width: double.infinity,
                   height: 150,
                   decoration: const BoxDecoration(
@@ -81,74 +94,127 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 30,
-                ),
+              ),
 
-                const Align(
+              const SizedBox(
+                height: 30,
+              ),
+
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'Poplar Categories',
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     )),
-                const SizedBox(
-                  height: 20,
-                ),
-                const CategoryBar(),
-                const SizedBox(
-                  height: 30,
-                ),
-                const Align(
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: CategoryBar(),
+              ),
+
+              const SizedBox(
+                height: 30,
+              ),
+
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'Trending Parties Around You',
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                     )),
+              ),
 
-                const SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(right: 8),
-                        child: EventCard(),
+              const SizedBox(
+                height: 20,
+              ),
+              EventCardCaroucel(),
+
+              const SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Column(
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: mainColor,
+                        backgroundColor: accentColor,
+                        minimumSize: const Size.fromHeight(32),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(right: 8),
-                        child: EventCard(),
+                      onPressed: () async {
+                        // FirestoreService().addEvent(comedyShow);
+                      },
+                      child: const Text('Add smaple event',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18)),
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: mainColor,
+                        backgroundColor: accentColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
                       ),
-                      EventCard(),
-                    ],
-                  ),
+                      onPressed: () async {},
+                      child: const Text('Get sample event',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18)),
+                    ),
+                  ],
                 ),
-
-                const SizedBox(
-                  height: 20,
-                ),
-
-                // ElevatedButton(
-                //   style: ElevatedButton.styleFrom(
-                //     foregroundColor: mainColor,
-                //     backgroundColor: accentColor,
-                //     minimumSize: const Size.fromHeight(64),
-                //     shape: RoundedRectangleBorder(
-                //       borderRadius: BorderRadius.circular(16.0),
-                //     ),
-                //   ),
-                //   onPressed: () async {
-                //     await _authService.signOut();
-                //   },
-                //   child: const Text('Log out',
-                //       style:
-                //           TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-                // ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
     );
+  }
+
+  FutureBuilder<List<Event>> EventCardCaroucel() {
+    return FutureBuilder<List<Event>>(
+      future: _fetchEvents(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return const Text('Error fetching events');
+        } else if (snapshot.hasData) {
+          final events = snapshot.data!;
+          return SizedBox(
+            height: 300,
+            child: ListView.builder(
+              scrollDirection:
+                  Axis.horizontal, // Assuming you want horizontal scrolling
+              itemCount: events.length,
+              itemBuilder: (context, index) {
+                return EventCard(event: events[index]);
+              },
+              shrinkWrap: true, // Allow ListView to shrink to fit content
+            ),
+          );
+        } else {
+          return const Text('No events found');
+        }
+      },
+    );
+  }
+
+  Future<List<Event>> _fetchEvents() async {
+    final events = await FirestoreService().getAllEvents();
+    return events;
   }
 }

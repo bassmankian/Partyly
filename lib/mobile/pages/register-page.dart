@@ -3,7 +3,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:partyly_app/common/app_colors.dart';
 import 'package:partyly_app/functions/firebase-firestore.dart';
 import 'package:partyly_app/functions/firebase_auth.dart';
-import 'package:partyly_app/pages/login-page.dart';
+import 'package:partyly_app/mobile/pages/login-page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});

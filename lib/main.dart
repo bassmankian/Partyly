@@ -2,10 +2,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:partyly_app/common/app_colors.dart';
 import 'package:partyly_app/common/utilities.dart';
-import 'package:partyly_app/pages/home-page.dart';
-import 'package:partyly_app/pages/login-page.dart';
+import 'package:partyly_app/mobile/pages/home-page.dart';
+import 'package:partyly_app/mobile/pages/login-page.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
-import 'package:partyly_app/pages/register-page.dart';
+import 'package:partyly_app/mobile/pages/register-page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

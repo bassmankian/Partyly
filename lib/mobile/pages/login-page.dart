@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:partyly_app/common/app_colors.dart';
 import 'package:partyly_app/common/utilities.dart';
 import 'package:partyly_app/functions/firebase_auth.dart';
-import 'package:partyly_app/pages/register-page.dart';
+import 'package:partyly_app/mobile/pages/register-page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
