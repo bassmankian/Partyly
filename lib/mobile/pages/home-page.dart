@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:partyly_app/common/app_colors.dart';
 import 'package:partyly_app/functions/firebase-firestore.dart';
 import 'package:partyly_app/functions/firebase_auth.dart';
@@ -97,7 +98,7 @@ class _HomePageState extends State<HomePage> {
               ),
 
               const SizedBox(
-                height: 30,
+                height: 32,
               ),
 
               const Padding(
@@ -111,7 +112,7 @@ class _HomePageState extends State<HomePage> {
                     )),
               ),
               const SizedBox(
-                height: 20,
+                height: 16,
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0),
@@ -119,7 +120,7 @@ class _HomePageState extends State<HomePage> {
               ),
 
               const SizedBox(
-                height: 30,
+                height: 32,
               ),
 
               const Padding(
@@ -134,49 +135,49 @@ class _HomePageState extends State<HomePage> {
               ),
 
               const SizedBox(
-                height: 20,
+                height: 16,
               ),
-              EventCardCaroucel(),
+              SizedBox(height: 350, child: EventCardCaroucel()),
 
               const SizedBox(
-                height: 20,
+                height: 16,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Column(
-                  children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: mainColor,
-                        backgroundColor: accentColor,
-                        minimumSize: const Size.fromHeight(32),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                      ),
-                      onPressed: () async {
-                        // FirestoreService().addEvent(comedyShow);
-                      },
-                      child: const Text('Add smaple event',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18)),
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: mainColor,
-                        backgroundColor: accentColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                      ),
-                      onPressed: () async {},
-                      child: const Text('Get sample event',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18)),
-                    ),
-                  ],
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              //   child: Column(
+              //     children: [
+              //       ElevatedButton(
+              //         style: ElevatedButton.styleFrom(
+              //           foregroundColor: mainColor,
+              //           backgroundColor: accentColor,
+              //           minimumSize: const Size.fromHeight(32),
+              //           shape: RoundedRectangleBorder(
+              //             borderRadius: BorderRadius.circular(8.0),
+              //           ),
+              //         ),
+              //         onPressed: () async {
+              //           // FirestoreService().addEvent(comedyShow);
+              //         },
+              //         child: const Text('Add smaple event',
+              //             style: TextStyle(
+              //                 fontWeight: FontWeight.bold, fontSize: 18)),
+              //       ),
+              //       ElevatedButton(
+              //         style: ElevatedButton.styleFrom(
+              //           foregroundColor: mainColor,
+              //           backgroundColor: accentColor,
+              //           shape: RoundedRectangleBorder(
+              //             borderRadius: BorderRadius.circular(8.0),
+              //           ),
+              //         ),
+              //         onPressed: () async {},
+              //         child: const Text('Get sample event',
+              //             style: TextStyle(
+              //                 fontWeight: FontWeight.bold, fontSize: 18)),
+              //       ),
+              //     ],
+              //   ),
+              // ),
             ],
           ),
         ),
@@ -194,17 +195,14 @@ class _HomePageState extends State<HomePage> {
           return const Text('Error fetching events');
         } else if (snapshot.hasData) {
           final events = snapshot.data!;
-          return SizedBox(
-            height: 300,
-            child: ListView.builder(
-              scrollDirection:
-                  Axis.horizontal, // Assuming you want horizontal scrolling
-              itemCount: events.length,
-              itemBuilder: (context, index) {
-                return EventCard(event: events[index]);
-              },
-              shrinkWrap: true, // Allow ListView to shrink to fit content
-            ),
+          return ListView.builder(
+            scrollDirection:
+                Axis.horizontal, // Assuming you want horizontal scrolling
+            itemCount: events.length,
+            itemBuilder: (context, index) {
+              return EventCard(event: events[index]);
+            },
+            shrinkWrap: true, // Allow ListView to shrink to fit content
           );
         } else {
           return const Text('No events found');

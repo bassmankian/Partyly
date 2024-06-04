@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:partyly_app/common/app_colors.dart';
 import 'package:partyly_app/common/utilities.dart';
@@ -9,7 +10,19 @@ import 'package:partyly_app/mobile/pages/register-page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  if (kIsWeb) {
+    Firebase.initializeApp(
+        options: const FirebaseOptions(
+            apiKey: "AIzaSyAPdSsck1Xe5r7ww1mLHBpPl08460sFCfo",
+            authDomain: "partyly-ef121.firebaseapp.com",
+            projectId: "partyly-ef121",
+            storageBucket: "partyly-ef121.appspot.com",
+            messagingSenderId: "875524811620",
+            appId: "1:875524811620:web:2f116d0dd4bbe36ff4e871",
+            measurementId: "G-JVXJ3GM7ML"));
+  } else {
+    await Firebase.initializeApp();
+  }
 
   runApp(const MyApp());
 }
