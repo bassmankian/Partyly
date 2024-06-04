@@ -76,4 +76,25 @@ class FirestoreService {
       return []; // Return an empty list in case of an error
     }
   }
+
+  Future<List<Event>> getUpcomingEvents() async {
+    try {
+      final now = Timestamp.now();
+      final eventsCollection = FirebaseFirestore.instance.collection('events');
+      final querySnapshot = await eventsCollection
+          .where('startDate', isGreaterThan: now) // Filter by startDate
+          .get();
+
+      final events = querySnapshot.docs.map((doc) {
+        final eventData = doc.data();
+        eventData['eventId'] = doc.id;
+        return Event.fromJson(eventData);
+      }).toList();
+
+      return events;
+    } catch (error) {
+      print("Error fetching upcoming events: $error");
+      return [];
+    }
+  }
 }

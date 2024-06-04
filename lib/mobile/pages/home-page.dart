@@ -136,47 +136,33 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(
                 height: 16,
               ),
-              SizedBox(height: 350, child: EventCardCaroucel()),
+              Padding(
+                padding: const EdgeInsets.only(left: 16),
+                child: EventCardCaroucel(FirestoreService().getAllEvents),
+              ),
+
+              const SizedBox(
+                height: 32,
+              ),
+
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Upcoming events in the future',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    )),
+              ),
 
               const SizedBox(
                 height: 16,
               ),
-              // Padding(
-              //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              //   child: Column(
-              //     children: [
-              //       ElevatedButton(
-              //         style: ElevatedButton.styleFrom(
-              //           foregroundColor: mainColor,
-              //           backgroundColor: accentColor,
-              //           minimumSize: const Size.fromHeight(32),
-              //           shape: RoundedRectangleBorder(
-              //             borderRadius: BorderRadius.circular(8.0),
-              //           ),
-              //         ),
-              //         onPressed: () async {
-              //           // FirestoreService().addEvent(comedyShow);
-              //         },
-              //         child: const Text('Add smaple event',
-              //             style: TextStyle(
-              //                 fontWeight: FontWeight.bold, fontSize: 18)),
-              //       ),
-              //       ElevatedButton(
-              //         style: ElevatedButton.styleFrom(
-              //           foregroundColor: mainColor,
-              //           backgroundColor: accentColor,
-              //           shape: RoundedRectangleBorder(
-              //             borderRadius: BorderRadius.circular(8.0),
-              //           ),
-              //         ),
-              //         onPressed: () async {},
-              //         child: const Text('Get sample event',
-              //             style: TextStyle(
-              //                 fontWeight: FontWeight.bold, fontSize: 18)),
-              //       ),
-              //     ],
-              //   ),
-              // ),
+              Padding(
+                padding: const EdgeInsets.only(left: 16.0),
+                child: EventCardCaroucel(FirestoreService().getUpcomingEvents),
+              ),
             ],
           ),
         ),
@@ -184,9 +170,9 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  FutureBuilder<List<Event>> EventCardCaroucel() {
+  FutureBuilder<List<Event>> EventCardCaroucel(Function future) {
     return FutureBuilder<List<Event>>(
-      future: _fetchEvents(),
+      future: future(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -194,24 +180,22 @@ class _HomePageState extends State<HomePage> {
           return const Text('Error fetching events');
         } else if (snapshot.hasData) {
           final events = snapshot.data!;
-          return ListView.builder(
-            scrollDirection:
-                Axis.horizontal, // Assuming you want horizontal scrolling
-            itemCount: events.length,
-            itemBuilder: (context, index) {
-              return EventCard(event: events[index]);
-            },
-            shrinkWrap: true, // Allow ListView to shrink to fit content
+          return SizedBox(
+            height: 300,
+            child: ListView.builder(
+              scrollDirection:
+                  Axis.horizontal, // Assuming you want horizontal scrolling
+              itemCount: events.length,
+              itemBuilder: (context, index) {
+                return EventCard(event: events[index]);
+              },
+              shrinkWrap: true, // Allow ListView to shrink to fit content
+            ),
           );
         } else {
           return const Text('No events found');
         }
       },
     );
-  }
-
-  Future<List<Event>> _fetchEvents() async {
-    final events = await FirestoreService().getAllEvents();
-    return events;
   }
 }
