@@ -4,6 +4,7 @@ import 'package:partyly_app/common/app_colors.dart';
 import 'package:partyly_app/functions/firebase-firestore.dart';
 import 'package:partyly_app/functions/firebase_auth.dart';
 import 'package:partyly_app/models/event-model.dart';
+import 'package:partyly_app/widgets/bottom_navbar.dart';
 import 'package:partyly_app/widgets/category_bar.dart';
 import 'package:partyly_app/widgets/event_card.dart';
 
@@ -166,6 +167,7 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
+        bottomNavigationBar: MyBottomNavigationBar(),
       ),
     );
   }

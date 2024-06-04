@@ -69,17 +69,17 @@ class EventCard extends StatelessWidget {
                       ),
 
                       // start and end time (conditional display)
-                      if (event.startTime != null && event.endTime != null) ...[
+                      ...[
                         const SizedBox(width: 8),
                         const Icon(Icons.access_time,
                             color: accentColor, size: 8),
                         Text(
-                          formatTime(event.startTime!.toDate()),
+                          formatTime(event.startTime.toDate()),
                           style:
                               const TextStyle(color: accentColor, fontSize: 10),
                         ),
                         Text(
-                          ' | ${formatTime(event.endTime!.toDate())}',
+                          ' | ${formatTime(event.endTime.toDate())}',
                           style:
                               const TextStyle(color: accentColor, fontSize: 10),
                         ),
