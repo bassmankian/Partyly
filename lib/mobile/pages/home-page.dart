@@ -139,7 +139,7 @@ class _HomePageState extends State<HomePage> {
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 16),
-                child: EventCardCaroucel(FirestoreService().getAllEvents),
+                child: eventCardCaroucel(FirestoreService().getAllEvents),
               ),
 
               const SizedBox(
@@ -160,10 +160,7 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(
                 height: 16,
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0),
-                child: EventCardCaroucel(FirestoreService().getUpcomingEvents),
-              ),
+              eventCardCaroucel(FirestoreService().getUpcomingEvents),
             ],
           ),
         ),
@@ -172,7 +169,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  FutureBuilder<List<Event>> EventCardCaroucel(Function future) {
+  FutureBuilder<List<Event>> eventCardCaroucel(Function future) {
     return FutureBuilder<List<Event>>(
       future: future(),
       builder: (context, snapshot) {
