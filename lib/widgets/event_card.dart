@@ -107,7 +107,7 @@ class EventCard extends StatelessWidget {
               ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size.fromHeight(40),
+                  minimumSize: const Size.fromHeight(40),
                   backgroundColor: accentColor,
                   foregroundColor: mainColor,
                   textStyle: const TextStyle(fontWeight: FontWeight.bold),
