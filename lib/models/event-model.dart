@@ -10,6 +10,7 @@ class Event {
   final String? thumbnailUrl;
   final List<String>? imageUrls;
   final String organizerId;
+  final String? docId;
 
   Event({
     required this.name,
@@ -20,21 +21,22 @@ class Event {
     required this.endTime,
     this.thumbnailUrl,
     this.imageUrls,
+    this.docId,
     required this.organizerId,
   });
 
-  factory Event.fromJson(Map<String, dynamic> json) => Event(
-        name: json['name'] as String,
-        category: json['category'] as String,
-        // Directly access Timestamp objects from Firestore
-        startDate: json['startDate'] as Timestamp,
-        endDate: json['endDate'] as Timestamp,
-        startTime: json['startTime'] as Timestamp, // Handle optional time
-        endTime: json['endTime'] as Timestamp, // Handle optional time
-        thumbnailUrl: json['thumbnailUrl'] as String?,
-        imageUrls: json['imageUrls']?.cast<String>(),
-        organizerId: json['organizerId'] as String,
-      );
+  factory Event.fromJson(Map<String, dynamic> json, String docId) => Event(
+      name: json['name'] as String,
+      category: json['category'] as String,
+      // Directly access Timestamp objects from Firestore
+      startDate: json['startDate'] as Timestamp,
+      endDate: json['endDate'] as Timestamp,
+      startTime: json['startTime'] as Timestamp, // Handle optional time
+      endTime: json['endTime'] as Timestamp, // Handle optional time
+      thumbnailUrl: json['thumbnailUrl'] as String?,
+      imageUrls: json['imageUrls']?.cast<String>(),
+      organizerId: json['organizerId'] as String,
+      docId: docId);
 
   Map<String, dynamic> toJson() => {
         'name': name,

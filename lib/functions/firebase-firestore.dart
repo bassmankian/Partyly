@@ -50,7 +50,7 @@ class FirestoreService {
         // Add the document ID to the eventData
         eventData['eventId'] = eventDoc.id; // This is the crucial change
 
-        return Event.fromJson(eventData);
+        return Event.fromJson(eventData, eventId);
       } else {
         return null; // Event not found
       }
@@ -67,8 +67,8 @@ class FirestoreService {
 
       final events = querySnapshot.docs.map((doc) {
         final eventData = doc.data();
-        eventData['eventId'] = doc.id; // Add the document ID
-        return Event.fromJson(eventData);
+        // eventData['eventId'] = doc.id; // Add the document ID
+        return Event.fromJson(eventData, doc.id);
       }).toList();
 
       return events;
@@ -88,8 +88,8 @@ class FirestoreService {
 
       final events = querySnapshot.docs.map((doc) {
         final eventData = doc.data();
-        eventData['eventId'] = doc.id;
-        return Event.fromJson(eventData);
+        // eventData['eventId'] = doc.id;
+        return Event.fromJson(eventData, doc.id);
       }).toList();
 
       return events;
@@ -108,6 +108,8 @@ class FirestoreService {
 
       final ticketsInfos = querySnapshot.docs.map((doc) {
         final ticket = doc.data();
+        print(querySnapshot.toString());
+        print(ticket.toString());
         return ticketShortInfo.fromJson(ticket); // Corrected type
       }).toList();
 
