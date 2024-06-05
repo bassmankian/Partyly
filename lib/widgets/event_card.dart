@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:partyly_app/mobile/pages/evenet_details_page.dart';
 
@@ -19,6 +17,7 @@ class EventCard extends StatelessWidget {
       child: SizedBox(
         width: 200,
         child: Card(
+          margin: const EdgeInsets.all(0),
           color: containerColor,
           child: Padding(
             padding: const EdgeInsets.all(8.0),

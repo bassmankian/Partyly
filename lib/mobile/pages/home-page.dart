@@ -9,7 +9,7 @@ import 'package:partyly_app/widgets/category_bar.dart';
 import 'package:partyly_app/widgets/event_card.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({super.key});
+  const HomePage({super.key});
   static const String pageRoute = '/homePage';
 
   @override
@@ -18,12 +18,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _authService = FirebaseAuthService();
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _fetchEvents();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -186,7 +180,10 @@ class _HomePageState extends State<HomePage> {
                   Axis.horizontal, // Assuming you want horizontal scrolling
               itemCount: events.length,
               itemBuilder: (context, index) {
-                return EventCard(event: events[index]);
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: .0),
+                  child: EventCard(event: events[index]),
+                );
               },
               shrinkWrap: true, // Allow ListView to shrink to fit content
             ),

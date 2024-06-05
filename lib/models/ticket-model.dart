@@ -94,16 +94,52 @@ class Ticket {
         other.quantity == quantity &&
         other.ticketType == ticketType;
   }
+}
+
+class ticketShortInfo {
+  final int price;
+  final String type;
+  ticketShortInfo({
+    required this.price,
+    required this.type,
+  });
+
+  ticketShortInfo copyWith({
+    int? price,
+    String? type,
+  }) {
+    return ticketShortInfo(
+      price: price ?? this.price,
+      type: type ?? this.type,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'price': price,
+      'type': type,
+    };
+  }
+
+  factory ticketShortInfo.fromJson(Map<String, dynamic> map) {
+    return ticketShortInfo(
+      price: map['price'] as int,
+      type: map['type'] as String,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
 
   @override
-  int get hashCode {
-    return ticketId.hashCode ^
-        eventId.hashCode ^
-        userId.hashCode ^
-        price.hashCode ^
-        status.hashCode ^
-        datePurchased.hashCode ^
-        quantity.hashCode ^
-        ticketType.hashCode;
+  String toString() => 'ClassName(price: $price, type: $type)';
+
+  @override
+  bool operator ==(covariant ticketShortInfo other) {
+    if (identical(this, other)) return true;
+
+    return other.price == price && other.type == type;
   }
+
+  @override
+  int get hashCode => price.hashCode ^ type.hashCode;
 }

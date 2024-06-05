@@ -11,7 +11,7 @@ import 'package:partyly_app/mobile/pages/register-page.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (kIsWeb) {
-    Firebase.initializeApp(
+    await Firebase.initializeApp(
         options: const FirebaseOptions(
             apiKey: "AIzaSyAPdSsck1Xe5r7ww1mLHBpPl08460sFCfo",
             authDomain: "partyly-ef121.firebaseapp.com",

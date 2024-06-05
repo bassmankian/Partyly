@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:partyly_app/models/event-model.dart';
+import 'package:partyly_app/models/ticket-model.dart';
 
 class FirestoreService {
   Future<void> addUser(
@@ -94,6 +95,25 @@ class FirestoreService {
       return events;
     } catch (error) {
       print("Error fetching upcoming events: $error");
+      return [];
+    }
+  }
+
+  // get event ticket info
+  Future<List<ticketShortInfo>> getEventTicketInfo(String docId) async {
+    try {
+      final eventsCollection = FirebaseFirestore.instance.collection('events');
+      final querySnapshot =
+          await eventsCollection.doc(docId).collection('tickets').get();
+
+      final ticketsInfos = querySnapshot.docs.map((doc) {
+        final ticket = doc.data();
+        return ticketShortInfo.fromJson(ticket); // Corrected type
+      }).toList();
+
+      return ticketsInfos; // Add return statement here
+    } catch (error) {
+      print("Error fetching short ticket information: $error");
       return [];
     }
   }
