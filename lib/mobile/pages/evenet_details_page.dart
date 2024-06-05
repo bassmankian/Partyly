@@ -29,6 +29,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
 
   Future<void> _fetchData(String eventId) async {
     _ticektsInfo = await FirestoreService().getEventTicketInfo();
+
     setState(() {
       _isLoading = false;
     });
