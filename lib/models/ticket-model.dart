@@ -96,19 +96,19 @@ class Ticket {
   }
 }
 
-class ticketShortInfo {
+class TicketShortInfo {
   final int price;
   final String type;
-  ticketShortInfo({
+  TicketShortInfo({
     required this.price,
     required this.type,
   });
 
-  ticketShortInfo copyWith({
+  TicketShortInfo copyWith({
     int? price,
     String? type,
   }) {
-    return ticketShortInfo(
+    return TicketShortInfo(
       price: price ?? this.price,
       type: type ?? this.type,
     );
@@ -121,8 +121,8 @@ class ticketShortInfo {
     };
   }
 
-  factory ticketShortInfo.fromJson(Map<String, dynamic> map) {
-    return ticketShortInfo(
+  factory TicketShortInfo.fromJson(Map<String, dynamic> map) {
+    return TicketShortInfo(
       price: map['price'] as int,
       type: map['type'] as String,
     );
@@ -134,7 +134,7 @@ class ticketShortInfo {
   String toString() => 'ClassName(price: $price, type: $type)';
 
   @override
-  bool operator ==(covariant ticketShortInfo other) {
+  bool operator ==(covariant TicketShortInfo other) {
     if (identical(this, other)) return true;
 
     return other.price == price && other.type == type;

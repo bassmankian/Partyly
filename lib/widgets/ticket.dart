@@ -15,7 +15,7 @@ class TicketCard extends StatelessWidget {
       color: containerColor,
       child: ListTile(
         title: Text(type),
-        leading: Text(price.toString()),
+        trailing: Text('${price.toString()} + TRY'),
       ),
     );
   }

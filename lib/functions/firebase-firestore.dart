@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:partyly_app/models/event-model.dart';
 import 'package:partyly_app/models/ticket-model.dart';
 
 class FirestoreService {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   Future<void> addUser(
       String name, String mobile, String email, String userId) async {
     final userData = {
@@ -14,7 +17,6 @@ class FirestoreService {
     print('User added successfully with ID: $userId');
   }
 
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   Future<DocumentReference> addDocument(
       String collectionPath, Map<String, dynamic> data, String id) async {
     final collectionRef = _firestore.collection(collectionPath);
@@ -100,7 +102,7 @@ class FirestoreService {
   }
 
   // get event ticket info
-  Future<List<ticketShortInfo>> getEventTicketInfo(String docId) async {
+  Future<List<TicketShortInfo>> getEventTicketInfo(String docId) async {
     try {
       final eventsCollection = FirebaseFirestore.instance.collection('events');
       final querySnapshot =
@@ -108,7 +110,7 @@ class FirestoreService {
 
       final ticketsInfos = querySnapshot.docs.map((doc) {
         final ticket = doc.data();
-        return ticketShortInfo.fromJson(ticket); // Corrected type
+        return TicketShortInfo.fromJson(ticket); // Corrected type
       }).toList();
 
       return ticketsInfos; // Add return statement here
@@ -116,5 +118,55 @@ class FirestoreService {
       print("Error fetching short ticket information: $error");
       return [];
     }
+  }
+
+// get document Id by title in document
+  Future<String> getEventIdByName(String eventName) async {
+    try {
+      // 1. Query for the event document by name
+      QuerySnapshot eventSnapshot = await FirebaseFirestore.instance
+          .collection('events')
+          .where('name', isEqualTo: eventName)
+          .get();
+
+      if (eventSnapshot.docs.isNotEmpty) {
+        DocumentSnapshot eventDoc = eventSnapshot.docs.first;
+
+        // 2. Get the document ID from the event document
+        String eventId = eventDoc.id;
+        print('the event id is: $eventId');
+
+        return eventId;
+      } else {
+        throw Exception('Event not found');
+      }
+    } catch (error) {
+      print("Error fetching tickets for event $eventName: $error");
+    }
+    return '';
+  }
+
+  Future<List<TicketShortInfo>> getEventTicketsByName(String eventName) async {
+    final eventId = await getEventIdByName(eventName);
+
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('events')
+        .doc(eventId)
+        .collection('tickets')
+        .get();
+
+    final tickets = querySnapshot.docs
+        .map((doc) {
+          final ticket = doc.data() as Map<String, dynamic>;
+
+          return TicketShortInfo.fromJson(ticket);
+        })
+        .whereType<TicketShortInfo>()
+        .toList(); // Filter out potential null values);
+    if (tickets.isEmpty) {
+      print('Ticket data is empty here');
+      return [];
+    }
+    return tickets;
   }
 }
