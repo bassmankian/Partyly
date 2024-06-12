@@ -16,9 +16,6 @@ class EventDetailsPage extends StatefulWidget {
 }
 
 class _EventDetailsPageState extends State<EventDetailsPage> {
-  bool _isLoading = true;
-  List<TicketShortInfo> _ticektsInfo = [];
-
   @override
   Widget build(BuildContext context) {
     late final event = widget.event;
