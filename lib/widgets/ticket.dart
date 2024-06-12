@@ -12,15 +12,8 @@ class TicketCard extends StatelessWidget {
     return Card(
       color: containerColor,
       child: ListTile(
-        leading: getIcon(type),
-        title: Text(
-          type,
-          style: TextStyle(fontSize: 18),
-        ),
-        trailing: Text(
-          '$price TRY',
-          style: const TextStyle(fontSize: 14),
-        ),
+        title: Text(type),
+        trailing: Text('${price.toString()} + TRY'),
       ),
     );
   }

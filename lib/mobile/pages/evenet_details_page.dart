@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:partyly_app/functions/firebase-firestore.dart';
 import 'package:partyly_app/common/app_colors.dart';
@@ -19,121 +17,103 @@ class EventDetailsPage extends StatefulWidget {
 }
 
 class _EventDetailsPageState extends State<EventDetailsPage> {
-  bool _isLoading = true;
-  List<ticketShortInfo> _ticektsInfo = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchData(widget.event.docId!);
-  }
-
-  Future<void> _fetchData(String eventId) async {
-    _ticektsInfo = await FirestoreService().getEventTicketInfo(eventId);
-
-    setState(() {
-      _isLoading = false;
-    });
-  }
+  List<TicketShortInfo> _ticektsInfo = [];
 
   @override
   Widget build(BuildContext context) {
-    final docId = widget.event.docId!;
     final event = widget.event;
 
     return Scaffold(
         backgroundColor: mainColor, // Set the background color to black
-        body: _isLoading
-            ? const Center(child: CircularProgressIndicator()) // Loading state
-            : CustomScrollView(
-                slivers: [
-                  SliverAppBar(
-                    expandedHeight: 200, // Adjust as needed
-                    flexibleSpace: FlexibleSpaceBar(
-                      background: widget.event.thumbnailUrl != null
-                          ? Image.network(
-                              widget.event.thumbnailUrl!,
-                              fit: BoxFit.cover,
-                            )
-                          : Container(color: Colors.grey),
-                    ),
-                  ),
-                  SliverList(
-                    delegate: SliverChildListDelegate([
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Category Badge
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 4),
-                              decoration: BoxDecoration(
-                                color: accentColor,
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              child: Text(
-                                widget.event.category,
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  color: mainColor,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 32),
 
-                            // Title, Address, and Time
-                            eventTitleTimeInfo(),
-                            const SizedBox(
-                              height: 16,
-                            ),
-
-                            //  organizer information card
-                            OrganizerCard(widget: widget),
-                            const SizedBox(
-                              height: 16,
-                            ),
-                            // image holder container
-                            imageHolder(event),
-                            const SizedBox(
-                              height: 32,
-                            ),
-
-                            const Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'Tickets',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18),
-                                )),
-                            const SizedBox(
-                              height: 16,
-                            ),
-
-                            SizedBox(
-                              height: 200,
-                              child: ListView.builder(
-                                physics: const NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: _ticektsInfo.length,
-                                itemBuilder: (context, index) {
-                                  return TicketCard(
-                                    price: _ticektsInfo[index].price,
-                                    type: _ticektsInfo[index].type,
-                                  );
-                                },
-                              ),
-                            )
-                          ],
+        body: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              expandedHeight: 200, // Adjust as needed
+              flexibleSpace: FlexibleSpaceBar(
+                background: widget.event.thumbnailUrl != null
+                    ? Image.network(
+                        widget.event.thumbnailUrl!,
+                        fit: BoxFit.cover,
+                      )
+                    : Container(color: Colors.grey),
+              ),
+            ),
+            SliverList(
+              delegate: SliverChildListDelegate([
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Category Badge
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: accentColor,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Text(
+                          widget.event.category,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            color: mainColor,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    ]),
+                      const SizedBox(height: 32),
+
+                      // Title, Address, and Time
+                      eventTitleTimeInfo(),
+                      const SizedBox(
+                        height: 16,
+                      ),
+
+                      //  organizer information card
+                      OrganizerCard(widget: widget),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      // image holder container
+                      imageHolder(event),
+                      const SizedBox(
+                        height: 32,
+                      ),
+
+                      const Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Tickets',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 18),
+                          )),
+                      const SizedBox(
+                        height: 16,
+                      ),
+
+                      SizedBox(
+                        height: 200,
+                        child: ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: _ticektsInfo.length,
+                          itemBuilder: (context, index) {
+                            return TicketCard(
+                              price: _ticektsInfo[index].price,
+                              type: _ticektsInfo[index].type,
+                            );
+                          },
+                        ),
+                      )
+                    ],
                   ),
-                ],
-              ));
+                ),
+              ]),
+            ),
+          ],
+        ));
   }
 
   Row eventTitleTimeInfo() {
@@ -241,6 +221,35 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
           );
         },
       ),
+    );
+  }
+
+  FutureBuilder<List<TicketShortInfo>> buildTicketCard(Event event) {
+    return FutureBuilder<List<TicketShortInfo>>(
+      future: FirestoreService().getEventTicketsByName(event.name),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return const Text('Error fetching tickets');
+        } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+          // Check for non-empty data
+          final tickets = snapshot.data!;
+          return Expanded(
+            child: ListView.separated(
+              separatorBuilder: (context, index) => Divider(),
+              scrollDirection: Axis.vertical,
+              itemCount: tickets.length,
+              itemBuilder: (context, index) => TicketCard(
+                type: tickets[index].type, // Provide default values if null
+                price: tickets[index].price,
+              ),
+            ),
+          );
+        } else {
+          return Center(child: const Text('No tickets found for this event'));
+        }
+      },
     );
   }
 
