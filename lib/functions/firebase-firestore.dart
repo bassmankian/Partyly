@@ -13,7 +13,6 @@ class FirestoreService {
       'email': email,
     };
     await addDocument('users', userData, userId);
-    print('User added successfully with ID: $userId');
   }
 
   Future<DocumentReference> addDocument(
@@ -33,10 +32,8 @@ class FirestoreService {
 
       // 3. Add the event to Firestore
       await eventsCollection.doc().set(event.toJson());
-
-      print("Event added successfully");
     } catch (error) {
-      print("Error adding event: $error"); // Handle the error appropriately
+      // Handle the error appropriately
     }
   }
 
@@ -56,7 +53,6 @@ class FirestoreService {
         return null; // Event not found
       }
     } catch (error) {
-      print("Error fetching event: $error");
       return null;
     }
   }
@@ -74,7 +70,6 @@ class FirestoreService {
 
       return events;
     } catch (error) {
-      print("Error fetching events: $error");
       return []; // Return an empty list in case of an error
     }
   }
@@ -95,7 +90,6 @@ class FirestoreService {
 
       return events;
     } catch (error) {
-      print("Error fetching upcoming events: $error");
       return [];
     }
   }
@@ -114,7 +108,6 @@ class FirestoreService {
 
       return ticketsInfos; // Add return statement here
     } catch (error) {
-      print("Error fetching short ticket information: $error");
       return [];
     }
   }
@@ -133,15 +126,12 @@ class FirestoreService {
 
         // 2. Get the document ID from the event document
         String eventId = eventDoc.id;
-        print('the event id is: $eventId');
 
         return eventId;
       } else {
         throw Exception('Event not found');
       }
-    } catch (error) {
-      print("Error fetching tickets for event $eventName: $error");
-    }
+    } catch (error) {}
     return '';
   }
 
@@ -163,7 +153,6 @@ class FirestoreService {
         .whereType<TicketShortInfo>()
         .toList(); // Filter out potential null values);
     if (tickets.isEmpty) {
-      print('Ticket data is empty here');
       return [];
     }
     return tickets;

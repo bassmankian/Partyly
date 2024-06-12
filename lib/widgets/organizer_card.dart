@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:partyly_app/common/app_colors.dart';
 import 'package:partyly_app/mobile/pages/evenet_details_page.dart';

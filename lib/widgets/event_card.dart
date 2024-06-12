@@ -13,9 +13,9 @@ class EventCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AspectRatio(
-      aspectRatio: 1 / 1.61,
+      aspectRatio: 1 / 1.5,
       child: SizedBox(
-        width: 200,
+        // width: 500,
         child: Card(
           margin: const EdgeInsets.all(0),
           color: containerColor,
