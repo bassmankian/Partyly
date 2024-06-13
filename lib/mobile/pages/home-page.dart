@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:partyly_app/common/app_colors.dart';
-import 'package:partyly_app/functions/firebase-firestore.dart';
 import 'package:partyly_app/functions/firebase_auth.dart';
+import 'package:partyly_app/functions/firestore-event.dart';
 import 'package:partyly_app/models/event-model.dart';
 import 'package:partyly_app/widgets/bottom_navbar.dart';
 import 'package:partyly_app/widgets/category_bar.dart';
@@ -134,7 +133,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 16),
-                  child: eventCardCaroucel(FirestoreService().getAllEvents),
+                  child: eventCardCaroucel(FirestoreEvents().getAllEvents),
                 ),
 
                 const SizedBox(
@@ -155,7 +154,7 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(
                   height: 16,
                 ),
-                eventCardCaroucel(FirestoreService().getUpcomingEvents),
+                eventCardCaroucel(FirestoreEvents().getUpcomingEvents),
               ],
             ),
           ),

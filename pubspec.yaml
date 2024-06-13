@@ -42,6 +42,8 @@ dependencies:
   email_validator: ^2.1.17
   page_transition: ^2.1.0
   intl: ^0.19.0
+  firebase_storage: ^11.7.7
+  file_picker: ^8.0.5
 
 dev_dependencies:
   flutter_test:

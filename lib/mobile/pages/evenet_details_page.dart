@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:partyly_app/functions/firebase-firestore.dart';
 import 'package:partyly_app/common/app_colors.dart';
+import 'package:partyly_app/functions/firestore-event.dart';
 import 'package:partyly_app/models/event-model.dart';
 import 'package:partyly_app/models/ticket-model.dart';
 import 'package:partyly_app/widgets/ticket.dart'; // Your event model
@@ -16,9 +16,6 @@ class EventDetailsPage extends StatefulWidget {
 }
 
 class _EventDetailsPageState extends State<EventDetailsPage> {
-  bool _isLoading = true;
-  List<TicketShortInfo> _ticektsInfo = [];
-
   @override
   Widget build(BuildContext context) {
     late final event = widget.event;
@@ -252,7 +249,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
 
   FutureBuilder<List<TicketShortInfo>> buildTicketCard(Event event) {
     return FutureBuilder<List<TicketShortInfo>>(
-      future: FirestoreService().getEventTicketsByName(event.name),
+      future: FirestoreEvents().getEventTicketsByName(event.name),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
