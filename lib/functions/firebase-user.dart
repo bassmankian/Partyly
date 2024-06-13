@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:partyly_app/functions/firebase-firestore.dart';
-import 'package:partyly_app/models/user-model.dart';
 
 class FirestoreUser {
   final _firestore = FirebaseFirestore.instance.collection('users');

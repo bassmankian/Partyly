@@ -12,25 +12,51 @@ class MePage extends StatefulWidget {
 
 class _MePageState extends State<MePage> {
   String? userId = FirebaseAuthService().getCurrentUserId();
+  User? user; // To store the fetched user data
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserData(); // Call the function to fetch data in initState
+  }
+
+  Future<void> _fetchUserData() async {
+    try {
+      final userData = await FirestoreUser().getUser(userId!);
+      setState(() {
+        user = User.fromJson(userData);
+      });
+    } catch (error) {
+      // Handle potential errors during the Firestore fetch
+      print('Error fetching user: $error');
+      // Potentially show an error message to the user
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Map<String, dynamic>>(
-      // Use FutureBuilder to handle async operation
-      future: FirestoreUser()
-          .getUser(userId!), // Use '!' if you're sure userId won't be null
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
-        } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
-        } else if (snapshot.hasData) {
-          final user = snapshot.data;
-          return Center(child: Text(user!['name'])); // Access the user's name
-        } else {
-          return const Text('User not found');
-        }
-      },
+    return Center(
+        child: user == null
+            ? const CircularProgressIndicator() // Show loading indicator
+            : MePageWidgets(user: user) // Access the user's name if available
+        );
+  }
+}
+
+class MePageWidgets extends StatelessWidget {
+  const MePageWidgets({
+    super.key,
+    required this.user,
+  });
+
+  final User? user;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text('Welcome dear ${user?.name}!'),
+      ],
     );
   }
 }

@@ -22,11 +22,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
 
     return Scaffold(
         backgroundColor: mainColor, // Set the background color to black
-        body:
-            // _isLoading
-            //     ? const Center(child: CircularProgressIndicator()) // Loading state
-            //     :
-            CustomScrollView(
+        body: CustomScrollView(
           slivers: [
             SliverAppBar(
               expandedHeight: 200, // Adjust as needed
