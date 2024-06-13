@@ -30,7 +30,6 @@ class FirestoreEvents {
 
       final events = querySnapshot.docs.map((doc) {
         final eventData = doc.data();
-        // eventData['eventId'] = doc.id; // Add the document ID
         return Event.fromJson(eventData, doc.id);
       }).toList();
 
@@ -38,6 +37,17 @@ class FirestoreEvents {
     } catch (error) {
       return []; // Return an empty list in case of an error
     }
+  }
+
+  Future<Event?> getAllEventsFomUser(String userId) async {
+    try {
+      final eventsCollection = FirebaseFirestore.instance.collection('events');
+      final eventDoc =
+          await eventsCollection.where('organizerId', isEqualTo: userId).get();
+    } catch (e) {
+      print(e);
+    }
+    return null;
   }
 
   Future<List<Event>> getUpcomingEvents() async {

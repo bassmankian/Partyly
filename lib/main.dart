@@ -6,6 +6,7 @@ import 'package:partyly_app/common/utilities.dart';
 import 'package:partyly_app/mobile/pages/home-page.dart';
 import 'package:partyly_app/mobile/pages/login-page.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:partyly_app/mobile/pages/main-scaffold.dart';
 import 'package:partyly_app/mobile/pages/register-page.dart';
 
 void main() async {
@@ -49,7 +50,7 @@ class MyApp extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.active) {
             // User is logged in
             if (snapshot.hasData) {
-              return HomePage();
+              return const MainScaffold();
             }
             // User is not logged in
             else {

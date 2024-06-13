@@ -6,18 +6,19 @@ class User {
   final String? nationality; // Optional nationality
   final String? mobileNumber; // Optional mobile number
   final String? gender; // Optional gender
+  final String? profileUrl;
   final Map<String, dynamic>? privateData; // Optional private data
 
-  User({
-    required this.userId,
-    required this.name,
-    this.familyName,
-    required this.userType,
-    this.nationality,
-    this.mobileNumber,
-    this.gender,
-    this.privateData,
-  });
+  User(
+      {required this.userId,
+      required this.name,
+      required this.familyName,
+      required this.userType,
+      this.nationality,
+      this.mobileNumber,
+      this.gender,
+      this.privateData,
+      this.profileUrl});
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         userId: json['userId'] as String,
@@ -27,6 +28,7 @@ class User {
         nationality: json['nationality'] as String?,
         mobileNumber: json['mobileNumber'] as String?,
         gender: json['gender'] as String?,
+        profileUrl: json['profileUrl'] as String?,
         privateData: json['privateData'] as Map<String, dynamic>?,
       );
 
@@ -38,6 +40,7 @@ class User {
         'nationality': nationality,
         'mobileNumber': mobileNumber,
         'gender': gender,
+        'profileUrl': profileUrl,
         'privateData': privateData,
       };
 }
