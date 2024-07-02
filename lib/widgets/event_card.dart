@@ -36,6 +36,13 @@ class EventCard extends StatelessWidget {
                             child: Image.network(
                               event.thumbnailUrl!,
                               fit: BoxFit.cover,
+                              loadingBuilder:
+                                  (context, child, loadingProgress) {
+                                if (loadingProgress == null) return child;
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              },
                               errorBuilder: (context, error, stackTrace) =>
                                   Container(
                                 color: Colors.grey,

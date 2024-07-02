@@ -201,8 +201,14 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(8),
                                   child: Image.network(
-                                    widget.event.imageUrls![index].toString(),
+                                    event.imageUrls![index].toString(),
                                     fit: BoxFit.cover,
+                                    errorBuilder: (BuildContext context,
+                                        Object exception,
+                                        StackTrace? stackTrace) {
+                                      // Return a placeholder widget, error message, or retry logic
+                                      return const Text('Image failed to load');
+                                    },
                                   ),
                                 ),
                               ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:partyly_app/functions/firebase-user.dart';
 import 'package:partyly_app/functions/firebase_auth.dart';
 import 'package:partyly_app/models/user-model.dart';
+import 'package:partyly_app/widgets/buttons.dart';
 
 class MePage extends StatefulWidget {
   const MePage({super.key});
@@ -53,10 +54,14 @@ class MePageWidgets extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text('Welcome dear ${user?.name}!'),
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          Text('Welcome dear ${user?.name}!'),
+          CustomElevatedButton(text: 'Add event', onPressed: () {})
+        ],
+      ),
     );
   }
 }
