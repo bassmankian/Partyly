@@ -15,6 +15,8 @@ class EventDetailsPage extends StatefulWidget {
   State<EventDetailsPage> createState() => _EventDetailsPageState();
 }
 
+int selectedTicket = -1;
+
 class _EventDetailsPageState extends State<EventDetailsPage> {
   @override
   Widget build(BuildContext context) {
@@ -40,6 +42,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Category Badge
@@ -226,20 +229,10 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 18),
                           )),
+                      buildTicketCard(event),
                       const SizedBox(
-                        height: 16,
-                      ),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 200,
-                        child: Card(
-                          color: containerColor,
-                          margin: const EdgeInsets.all(0),
-                          child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: buildTicketCard(event)),
-                        ),
-                      ),
+                        height: 400,
+                      )
                     ],
                   ),
                 ),
@@ -260,16 +253,41 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
         } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
           // Check for non-empty data
           final tickets = snapshot.data!;
-          return Expanded(
-            child: ListView.separated(
-              separatorBuilder: (context, index) => Divider(),
-              scrollDirection: Axis.vertical,
-              itemCount: tickets.length,
-              itemBuilder: (context, index) => TicketCard(
-                type: tickets[index].type, // Provide default values if null
-                price: tickets[index].price,
+          return StatefulBuilder(
+            builder: (context, setState) => Stack(children: [
+              ListView.builder(
+                shrinkWrap: true,
+                scrollDirection: Axis.vertical,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: tickets.length,
+                itemBuilder: (context, index) => GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      if (selectedTicket == index) {
+                        selectedTicket = -1;
+                      } else {
+                        selectedTicket = index;
+                      }
+                    });
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Container(
+                      decoration: index != selectedTicket
+                          ? null
+                          : BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(16)),
+                              border: Border.all(color: accentColor, width: 2)),
+                      child: TicketCard(
+                        ticket:
+                            tickets[index], // Provide default values if null
+                      ),
+                    ),
+                  ),
+                ),
               ),
-            ),
+            ]),
           );
         } else {
           return const Center(child: Text('No tickets found for this event'));
@@ -278,7 +296,35 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
     );
   }
 
-  // Helper functions (unchanged)
+  Widget buildFixedBottomContainer(Event event, TicketShortInfo ticket) {
+    double count = 0;
+    double totalAmount = ticket.price * count;
+
+    return Visibility(
+      visible: totalAmount >= 0,
+      child: Container(
+        padding: const EdgeInsets.all(16.0),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          boxShadow: [BoxShadow(blurRadius: 10)],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text("Total Amount: \$$totalAmount"),
+            ElevatedButton(
+              onPressed: () {
+                // Implement your checkout or further action here
+              },
+              child: const Text("Checkout"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+// Helper functions (unchanged)
   String formatDayDate(DateTime date) {
     return DateFormat('dd').format(date);
   }

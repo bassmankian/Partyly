@@ -99,9 +99,11 @@ class Ticket {
 class TicketShortInfo {
   final int price;
   final String type;
+  final String description;
   TicketShortInfo({
     required this.price,
     required this.type,
+    required this.description,
   });
 
   TicketShortInfo copyWith({
@@ -111,6 +113,7 @@ class TicketShortInfo {
     return TicketShortInfo(
       price: price ?? this.price,
       type: type ?? this.type,
+      description: type ?? this.description,
     );
   }
 
@@ -125,6 +128,7 @@ class TicketShortInfo {
     return TicketShortInfo(
       price: map['price'] as int,
       type: map['type'] as String,
+      description: map['description'] as String,
     );
   }
 

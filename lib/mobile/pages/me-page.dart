@@ -59,6 +59,7 @@ class MePageWidgets extends StatelessWidget {
       child: Column(
         children: [
           Text('Welcome dear ${user?.name}!'),
+          Text('User access is ${user?.type}'),
           CustomElevatedButton(text: 'Add event', onPressed: () {})
         ],
       ),
