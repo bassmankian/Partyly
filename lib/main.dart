@@ -8,6 +8,8 @@ import 'package:partyly_app/mobile/pages/login-page.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:partyly_app/mobile/pages/main-scaffold.dart';
 import 'package:partyly_app/mobile/pages/register-page.dart';
+import 'package:partyly_app/models/providers.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +27,8 @@ void main() async {
     await Firebase.initializeApp();
   }
 
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+      create: (context) => UserProvider(), child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {

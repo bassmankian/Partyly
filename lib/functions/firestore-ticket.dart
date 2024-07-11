@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:partyly_app/models/event-model.dart';
 import 'package:partyly_app/models/ticket-model.dart';
+import 'package:partyly_app/models/user-model.dart';
 
 class FirestoreTicekts {
   // get event ticket info
@@ -17,6 +19,30 @@ class FirestoreTicekts {
       return ticketsInfos; // Add return statement here
     } catch (error) {
       return [];
+    }
+  }
+
+  addTicket(Ticket ticket) async {
+    final eventsCollection = FirebaseFirestore.instance.collection('tickets');
+    eventsCollection.add(ticket.toMap());
+  }
+
+  Future<Ticket> generateTicket(
+      TicketShortInfo shortTicket, Event event, User user) async {
+    try {
+      final ticket = Ticket(
+          eventId: event.docId!,
+          userId: user.docid!,
+          price: shortTicket.price,
+          status: 'purcahsed',
+          datePurchased: DateTime.now(),
+          quantity: 2);
+
+      print('The ticket data is: $ticket');
+      await addTicket(ticket);
+      return ticket;
+    } catch (e) {
+      throw Exception('Error generating ticket: $e');
     }
   }
 }

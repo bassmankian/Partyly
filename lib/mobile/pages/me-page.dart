@@ -25,7 +25,7 @@ class _MePageState extends State<MePage> {
     try {
       final userData = await FirestoreUser().getUser(userId!);
       setState(() {
-        user = User.fromJson(userData);
+        user = userData;
       });
     } catch (error) {
       // Handle potential errors during the Firestore fetch
@@ -57,8 +57,12 @@ class MePageWidgets extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Welcome dear ${user?.name}!'),
+          Text(
+            'Welcome dear ${user?.name}!',
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
           Text('User access is ${user?.type}'),
           CustomElevatedButton(text: 'Add event', onPressed: () {})
         ],

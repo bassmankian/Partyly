@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:partyly_app/common/app_colors.dart';
 import 'package:partyly_app/functions/firestore-event.dart';
+import 'package:partyly_app/functions/firestore-ticket.dart';
 import 'package:partyly_app/models/event-model.dart';
+import 'package:partyly_app/models/providers.dart';
 import 'package:partyly_app/models/ticket-model.dart';
-import 'package:partyly_app/widgets/ticket.dart'; // Your event model
+import 'package:partyly_app/widgets/ticket.dart';
+import 'package:provider/provider.dart'; // Your event model
 
 class EventDetailsPage extends StatefulWidget {
   final Event event;
@@ -243,6 +246,8 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
   }
 
   FutureBuilder<List<TicketShortInfo>> buildTicketCard(Event event) {
+    final user = Provider.of<UserProvider>(context).user;
+
     return FutureBuilder<List<TicketShortInfo>>(
       future: FirestoreEvents().getEventTicketsByName(event.name),
       builder: (context, snapshot) {
@@ -261,6 +266,14 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: tickets.length,
                 itemBuilder: (context, index) => GestureDetector(
+                  onLongPress: () {
+                    print(event);
+                    print(tickets[index]);
+                    print('User: $user');
+
+                    FirestoreTicekts()
+                        .generateTicket(tickets[index], event, user!);
+                  },
                   onTap: () {
                     setState(() {
                       if (selectedTicket == index) {
@@ -293,34 +306,6 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
           return const Center(child: Text('No tickets found for this event'));
         }
       },
-    );
-  }
-
-  Widget buildFixedBottomContainer(Event event, TicketShortInfo ticket) {
-    double count = 0;
-    double totalAmount = ticket.price * count;
-
-    return Visibility(
-      visible: totalAmount >= 0,
-      child: Container(
-        padding: const EdgeInsets.all(16.0),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          boxShadow: [BoxShadow(blurRadius: 10)],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text("Total Amount: \$$totalAmount"),
-            ElevatedButton(
-              onPressed: () {
-                // Implement your checkout or further action here
-              },
-              child: const Text("Checkout"),
-            ),
-          ],
-        ),
-      ),
     );
   }
 

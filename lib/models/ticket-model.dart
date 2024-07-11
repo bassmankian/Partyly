@@ -2,7 +2,7 @@
 import 'dart:convert';
 
 class Ticket {
-  final String ticketId;
+  final String? ticketId;
   final String eventId;
   final String userId;
   final double price;
@@ -11,7 +11,7 @@ class Ticket {
   final int quantity;
   final String? ticketType; // Optional ticket type
   Ticket({
-    required this.ticketId,
+    this.ticketId,
     required this.eventId,
     required this.userId,
     required this.price,
@@ -97,7 +97,7 @@ class Ticket {
 }
 
 class TicketShortInfo {
-  final int price;
+  final double price;
   final String type;
   final String description;
   TicketShortInfo({
@@ -107,7 +107,7 @@ class TicketShortInfo {
   });
 
   TicketShortInfo copyWith({
-    int? price,
+    double? price,
     String? type,
   }) {
     return TicketShortInfo(
@@ -126,7 +126,7 @@ class TicketShortInfo {
 
   factory TicketShortInfo.fromJson(Map<String, dynamic> map) {
     return TicketShortInfo(
-      price: map['price'] as int,
+      price: map['price'] as double,
       type: map['type'] as String,
       description: map['description'] as String,
     );

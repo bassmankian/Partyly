@@ -1,15 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:partyly_app/common/app_colors.dart';
+import 'package:partyly_app/functions/firebase-user.dart';
 import 'package:partyly_app/functions/firebase_auth.dart';
 import 'package:partyly_app/functions/firestore-event.dart';
 import 'package:partyly_app/mobile/pages/main-scaffold.dart';
+import 'package:partyly_app/models/providers.dart';
+import 'package:partyly_app/models/user-model.dart';
 import 'package:partyly_app/widgets/category_bar.dart';
+import 'package:provider/provider.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   HomePage({super.key});
   static const String pageRoute = '/homePage';
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+User? fetchedUser = null;
+
+class _HomePageState extends State<HomePage> {
   final _authService = FirebaseAuthService();
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserData();
+  }
+
+  Future<void> _fetchUserData() async {
+    final userId = _authService.getCurrentUserId();
+    final user = _authService.getCurrentUser();
+    print(userId);
+    fetchedUser = await FirestoreUser().getUser(userId!);
+    if (fetchedUser != null) {
+      Provider.of<UserProvider>(context, listen: false).setUser(fetchedUser!);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

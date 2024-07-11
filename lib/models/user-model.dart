@@ -5,25 +5,27 @@ class User {
   final String familyName; // Optional family name
   final String email;
   final String type;
+  final String? docid;
 
-  User({
-    required this.name,
-    required this.email,
-    required this.familyName,
-    required this.type,
-  });
+  User(
+      {required this.name,
+      required this.email,
+      required this.familyName,
+      required this.type,
+      this.docid});
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-        name: json['name'] as String,
-        email: json['email'] as String,
-        familyName: json['familyName'] as String,
-        type: json['type'] as String,
-      );
+      name: json['name'] as String,
+      email: json['email'] as String,
+      familyName: json['familyName'] as String,
+      type: json['type'] as String,
+      docid: json['docid'] as String);
 
   Map<String, dynamic> toJson() => {
         'name': name,
         'familyName': familyName,
         'userType': type,
+        'docid': docid
       };
 }
 

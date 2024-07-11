@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:partyly_app/functions/firebase-firestore.dart';
+import 'package:partyly_app/models/user-model.dart';
 
 class FirestoreUser {
   final _firestore = FirebaseFirestore.instance.collection('users');
@@ -14,20 +17,18 @@ class FirestoreUser {
     await FirestoreService().addDocument('users', userData, userId);
   }
 
-  Future<Map<String, dynamic>> getUser(String userId) async {
+  Future<User> getUser(String userId) async {
     try {
       final querySnapshot = await _firestore.doc(userId).get();
-      print(querySnapshot.data());
+      // print(querySnapshot.data());
 
       if (querySnapshot.exists) {
         final userData = querySnapshot.data();
-        return userData!;
-      } else {
-        return {};
-      }
+        return User.fromJson(userData!);
+      } else {}
     } catch (e) {
       print(e);
-      return {};
     }
+    throw e;
   }
 }
