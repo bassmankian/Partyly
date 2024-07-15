@@ -4,7 +4,8 @@ import 'package:partyly_app/common/app_colors.dart';
 import 'package:partyly_app/functions/firestore-event.dart';
 import 'package:partyly_app/functions/firestore-ticket.dart';
 import 'package:partyly_app/models/event-model.dart';
-import 'package:partyly_app/models/providers.dart';
+import 'package:partyly_app/models/providers/cart-provider.dart';
+import 'package:partyly_app/models/providers/user-provider.dart';
 import 'package:partyly_app/models/ticket-model.dart';
 import 'package:partyly_app/widgets/ticket.dart';
 import 'package:provider/provider.dart'; // Your event model
@@ -247,6 +248,8 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
 
   FutureBuilder<List<TicketShortInfo>> buildTicketCard(Event event) {
     final user = Provider.of<UserProvider>(context).user;
+    final cartProvider = Provider.of<CartProvider>(context);
+    int quantity = 0;
 
     return FutureBuilder<List<TicketShortInfo>>(
       future: FirestoreEvents().getEventTicketsByName(event.name),
@@ -267,12 +270,10 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                 itemCount: tickets.length,
                 itemBuilder: (context, index) => GestureDetector(
                   onLongPress: () {
-                    print(event);
-                    print(tickets[index]);
-                    print('User: $user');
+                    // final Ticket ticket = await FirestoreTicekts()
+                    //     .generateTicket(tickets[index], event, user!);
 
-                    FirestoreTicekts()
-                        .generateTicket(tickets[index], event, user!);
+                    cartProvider.addTicket(tickets[index], quantity++);
                   },
                   onTap: () {
                     setState(() {

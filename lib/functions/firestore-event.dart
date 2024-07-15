@@ -94,25 +94,31 @@ class FirestoreEvents {
   }
 
   Future<List<TicketShortInfo>> getEventTicketsByName(String eventName) async {
-    final eventId = await getEventIdByName(eventName);
+    try {
+      final eventId = await getEventIdByName(eventName);
 
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('events')
-        .doc(eventId)
-        .collection('tickets')
-        .get();
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('events')
+          .doc(eventId)
+          .collection('tickets')
+          .get();
 
-    final tickets = querySnapshot.docs
-        .map((doc) {
-          final ticket = doc.data() as Map<String, dynamic>;
+      final tickets = querySnapshot.docs
+          .map((doc) {
+            final ticket = doc.data() as Map<String, dynamic>;
+            final ticketWithId = {...ticket, 'ticketId': doc.id};
 
-          return TicketShortInfo.fromJson(ticket);
-        })
-        .whereType<TicketShortInfo>()
-        .toList(); // Filter out potential null values);
-    if (tickets.isEmpty) {
+            return TicketShortInfo.fromJson(ticketWithId);
+          })
+          .whereType<TicketShortInfo>()
+          .toList(); // Filter out potential null values);
+
+      return tickets;
+    } catch (error) {
+      print(
+          "Error fetching tickets for event $eventName: $error"); // Print the full error object
+      print(error.runtimeType); // Print the error type
       return [];
     }
-    return tickets;
   }
 }

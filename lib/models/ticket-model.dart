@@ -1,13 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Ticket {
   final String? ticketId;
   final String eventId;
   final String userId;
   final double price;
   final String status;
-  final DateTime datePurchased;
+  final Timestamp datePurchased;
   final int quantity;
   final String? ticketType; // Optional ticket type
   Ticket({
@@ -27,7 +29,7 @@ class Ticket {
     String? userId,
     double? price,
     String? status,
-    DateTime? datePurchased,
+    Timestamp? datePurchased,
     int? quantity,
     String? ticketType,
   }) {
@@ -45,12 +47,11 @@ class Ticket {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'ticketId': ticketId,
       'eventId': eventId,
       'userId': userId,
       'price': price,
       'status': status,
-      'datePurchased': datePurchased.millisecondsSinceEpoch,
+      'datePurchased': datePurchased,
       'quantity': quantity,
       'ticketType': ticketType,
     };
@@ -63,8 +64,7 @@ class Ticket {
       userId: map['userId'] as String,
       price: map['price'] as double,
       status: map['status'] as String,
-      datePurchased:
-          DateTime.fromMillisecondsSinceEpoch(map['datePurchased'] as int),
+      datePurchased: Timestamp.fromMillisecondsSinceEpoch(map['datePurchased']),
       quantity: map['quantity'] as int,
       ticketType:
           map['ticketType'] != null ? map['ticketType'] as String : null,
@@ -100,11 +100,12 @@ class TicketShortInfo {
   final double price;
   final String type;
   final String description;
-  TicketShortInfo({
-    required this.price,
-    required this.type,
-    required this.description,
-  });
+  final String? ticketId;
+  TicketShortInfo(
+      {required this.price,
+      required this.type,
+      required this.description,
+      this.ticketId});
 
   TicketShortInfo copyWith({
     double? price,
@@ -126,10 +127,10 @@ class TicketShortInfo {
 
   factory TicketShortInfo.fromJson(Map<String, dynamic> map) {
     return TicketShortInfo(
-      price: map['price'] as double,
-      type: map['type'] as String,
-      description: map['description'] as String,
-    );
+        price: map['price'] as double,
+        type: map['type'] as String,
+        description: map['description'] as String,
+        ticketId: map['ticketId'] as String);
   }
 
   String toJson() => json.encode(toMap());

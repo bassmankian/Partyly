@@ -8,7 +8,8 @@ import 'package:partyly_app/mobile/pages/login-page.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:partyly_app/mobile/pages/main-scaffold.dart';
 import 'package:partyly_app/mobile/pages/register-page.dart';
-import 'package:partyly_app/models/providers.dart';
+import 'package:partyly_app/models/providers/cart-provider.dart';
+import 'package:partyly_app/models/providers/user-provider.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -27,8 +28,17 @@ void main() async {
     await Firebase.initializeApp();
   }
 
-  runApp(ChangeNotifierProvider(
-      create: (context) => UserProvider(), child: const MyApp()));
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(
+        create: (_) => UserProvider(),
+      ),
+      ChangeNotifierProvider(
+        create: (_) => CartProvider(),
+      )
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

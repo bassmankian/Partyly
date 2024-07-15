@@ -31,15 +31,18 @@ class FirestoreTicekts {
       TicketShortInfo shortTicket, Event event, User user) async {
     try {
       final ticket = Ticket(
+          ticketType: shortTicket.type,
           eventId: event.docId!,
           userId: user.docid!,
           price: shortTicket.price,
           status: 'purcahsed',
-          datePurchased: DateTime.now(),
+          datePurchased: Timestamp.now(),
           quantity: 2);
 
       print('The ticket data is: $ticket');
-      await addTicket(ticket);
+
+      // await addTicket(ticket);
+
       return ticket;
     } catch (e) {
       throw Exception('Error generating ticket: $e');

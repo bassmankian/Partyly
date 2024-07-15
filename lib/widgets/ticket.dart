@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:partyly_app/common/app_colors.dart';
 import 'package:partyly_app/models/ticket-model.dart';
 

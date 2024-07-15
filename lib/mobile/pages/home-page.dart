@@ -4,7 +4,7 @@ import 'package:partyly_app/functions/firebase-user.dart';
 import 'package:partyly_app/functions/firebase_auth.dart';
 import 'package:partyly_app/functions/firestore-event.dart';
 import 'package:partyly_app/mobile/pages/main-scaffold.dart';
-import 'package:partyly_app/models/providers.dart';
+import 'package:partyly_app/models/providers/user-provider.dart';
 import 'package:partyly_app/models/user-model.dart';
 import 'package:partyly_app/widgets/category_bar.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +17,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-User? fetchedUser = null;
+User? fetchedUser;
 
 class _HomePageState extends State<HomePage> {
   final _authService = FirebaseAuthService();
@@ -30,8 +30,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _fetchUserData() async {
     final userId = _authService.getCurrentUserId();
-    final user = _authService.getCurrentUser();
-    print(userId);
+    print('from homepage: $userId');
     fetchedUser = await FirestoreUser().getUser(userId!);
     if (fetchedUser != null) {
       Provider.of<UserProvider>(context, listen: false).setUser(fetchedUser!);
