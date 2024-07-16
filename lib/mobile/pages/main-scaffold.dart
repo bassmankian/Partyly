@@ -55,6 +55,7 @@ class _MainScaffoldState extends State<MainScaffold> {
   }
 }
 
+// ignore: must_be_immutable
 class MyBottomNavigationBar extends StatefulWidget {
   int currentIndex = 0;
   Function onIndexChanged;

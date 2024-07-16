@@ -10,6 +10,8 @@ class ReservationPage extends StatelessWidget {
     final cartProvider = Provider.of<CartProvider>(context);
     final cartItems = cartProvider.items;
 
-    return Center(child: Text('Items in the cart are:' + cartItems.toString()));
+    return const Center(
+      child: Text('Reservation page'),
+    );
   }
 }
