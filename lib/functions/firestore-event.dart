@@ -44,7 +44,7 @@ class FirestoreEvents {
       final eventsCollection = FirebaseFirestore.instance.collection('events');
       final eventDoc =
           await eventsCollection.where('organizerId', isEqualTo: userId).get();
-    } catch (e) {
+    } on FirebaseException catch (e) {
       print(e);
     }
     return null;

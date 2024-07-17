@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:collection/collection.dart';
+import 'package:partyly_app/models/event-model.dart';
 import 'package:partyly_app/models/ticket-model.dart'; // Assuming you have a Ticket model
 
 class CartProvider with ChangeNotifier {
@@ -9,23 +10,20 @@ class CartProvider with ChangeNotifier {
   List<TicketItem> get items => _items;
 
   // Add a ticket to the cart
-  void addTicket(TicketShortInfo ticket, int quantity) {
-    void addTicket(TicketShortInfo ticket, int quantity) {
-      final existingItem = _items.firstWhereOrNull(
-        (item) =>
-            item.ticket.ticketId == ticket.ticketId, // Check for ticketId match
-      );
+  void addTicket(TicketShortInfo ticket, int quantity, Event event) {
+    final existingItem = _items.firstWhereOrNull(
+      (item) =>
+          item.ticket.ticketId == ticket.ticketId, // Check for ticketId match
+    );
 
-      if (existingItem != null) {
-        updateTicketQuantity(
-            ticket, existingItem.quantity + quantity); // Update if found
-      } else {
-        _items.add(
-            TicketItem(ticket: ticket, quantity: quantity)); // Add new item
-      }
-
-      notifyListeners();
+    if (existingItem != null) {
+      updateTicketQuantity(ticket, quantity, event); // Update if found
+    } else {
+      _items.add(TicketItem(
+          ticket: ticket, quantity: quantity, event: event)); // Add new item
     }
+
+    notifyListeners();
   }
 
   // Remove a ticket from the cart
@@ -35,11 +33,12 @@ class CartProvider with ChangeNotifier {
   }
 
   // Update the quantity of a ticket in the cart
-  void updateTicketQuantity(TicketShortInfo ticket, int quantity) {
+  void updateTicketQuantity(TicketShortInfo ticket, int quantity, Event event) {
     final index =
         _items.indexWhere((item) => item.ticket.ticketId == ticket.ticketId);
     if (index != -1) {
-      _items[index] = TicketItem(ticket: ticket, quantity: quantity);
+      _items[index] =
+          TicketItem(ticket: ticket, quantity: quantity, event: event);
       notifyListeners();
     }
   }
@@ -54,7 +53,9 @@ class CartProvider with ChangeNotifier {
 // Helper class to hold ticket information and quantity
 class TicketItem {
   final TicketShortInfo ticket;
+  final Event event;
   int quantity;
 
-  TicketItem({required this.ticket, required this.quantity});
+  TicketItem(
+      {required this.ticket, required this.quantity, required this.event});
 }

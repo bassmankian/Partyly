@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:partyly_app/mobile/pages/evenet_details_page.dart';
-
 import '../common/app_colors.dart';
 import '../models/event-model.dart';
 

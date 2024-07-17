@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:partyly_app/common/app_colors.dart';
 import 'package:partyly_app/functions/firestore-event.dart';
-import 'package:partyly_app/functions/firestore-ticket.dart';
+import 'package:partyly_app/mobile/pages/cart-details.dart';
 import 'package:partyly_app/models/event-model.dart';
 import 'package:partyly_app/models/providers/cart-provider.dart';
 import 'package:partyly_app/models/providers/user-provider.dart';
 import 'package:partyly_app/models/ticket-model.dart';
+import 'package:partyly_app/widgets/buttons.dart';
 import 'package:partyly_app/widgets/ticket.dart';
-import 'package:provider/provider.dart'; // Your event model
+import 'package:provider/provider.dart';
 
 class EventDetailsPage extends StatefulWidget {
   final Event event;
@@ -19,12 +20,19 @@ class EventDetailsPage extends StatefulWidget {
   State<EventDetailsPage> createState() => _EventDetailsPageState();
 }
 
-int selectedTicket = -1;
+List<int> selectedTicket = [];
 
 class _EventDetailsPageState extends State<EventDetailsPage> {
   @override
   Widget build(BuildContext context) {
     late final event = widget.event;
+    void onpressedButton() {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const CartDetailPage(),
+          ));
+    }
 
     return Scaffold(
         backgroundColor: mainColor, // Set the background color to black
@@ -235,8 +243,10 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                           )),
                       buildTicketCard(event),
                       const SizedBox(
-                        height: 400,
-                      )
+                        height: 16,
+                      ),
+                      CustomElevatedButton(
+                          text: 'Continue', onPressed: onpressedButton)
                     ],
                   ),
                 ),
@@ -248,7 +258,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
 
   FutureBuilder<List<TicketShortInfo>> buildTicketCard(Event event) {
     final user = Provider.of<UserProvider>(context).user;
-    final cartProvider = Provider.of<CartProvider>(context);
+    final cartProvider = Provider.of<CartProvider>(context, listen: false);
     int quantity = 0;
 
     return FutureBuilder<List<TicketShortInfo>>(
@@ -272,27 +282,28 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                   onLongPress: () {
                     // final Ticket ticket = await FirestoreTicekts()
                     //     .generateTicket(tickets[index], event, user!);
-
-                    cartProvider.addTicket(tickets[index], quantity++);
                   },
                   onTap: () {
                     setState(() {
-                      if (selectedTicket == index) {
-                        selectedTicket = -1;
+                      if (selectedTicket.contains(index)) {
+                        cartProvider.removeTicket(tickets[index]);
+                        selectedTicket.remove(index);
                       } else {
-                        selectedTicket = index;
+                        selectedTicket.add(index);
+                        cartProvider.addTicket(
+                            tickets[index], ++quantity, event);
                       }
                     });
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: Container(
-                      decoration: index != selectedTicket
-                          ? null
-                          : BoxDecoration(
+                      decoration: selectedTicket.contains(index)
+                          ? BoxDecoration(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(16)),
-                              border: Border.all(color: accentColor, width: 2)),
+                              border: Border.all(color: accentColor, width: 2))
+                          : null,
                       child: TicketCard(
                         ticket:
                             tickets[index], // Provide default values if null
