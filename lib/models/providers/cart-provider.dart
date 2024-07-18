@@ -20,7 +20,7 @@ class CartProvider with ChangeNotifier {
       updateTicketQuantity(ticket, quantity, event); // Update if found
     } else {
       _items.add(TicketItem(
-          ticket: ticket, quantity: quantity, event: event)); // Add new item
+          ticket: ticket, quantity: 1, event: event)); // Add new item
     }
 
     notifyListeners();

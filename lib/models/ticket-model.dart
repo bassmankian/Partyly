@@ -7,15 +7,18 @@ class Ticket {
   final String? ticketId;
   final String eventId;
   final String userId;
-  final double price;
+  final String name;
+  final int price;
   final String status;
   final Timestamp datePurchased;
   final int quantity;
   final String? ticketType; // Optional ticket type
+
   Ticket({
     this.ticketId,
     required this.eventId,
     required this.userId,
+    required this.name,
     required this.price,
     required this.status,
     required this.datePurchased,
@@ -27,7 +30,8 @@ class Ticket {
     String? ticketId,
     String? eventId,
     String? userId,
-    double? price,
+    String? name,
+    int? price,
     String? status,
     Timestamp? datePurchased,
     int? quantity,
@@ -37,6 +41,7 @@ class Ticket {
       ticketId: ticketId ?? this.ticketId,
       eventId: eventId ?? this.eventId,
       userId: userId ?? this.userId,
+      name: name ?? this.name,
       price: price ?? this.price,
       status: status ?? this.status,
       datePurchased: datePurchased ?? this.datePurchased,
@@ -49,6 +54,7 @@ class Ticket {
     return <String, dynamic>{
       'eventId': eventId,
       'userId': userId,
+      'name': name,
       'price': price,
       'status': status,
       'datePurchased': datePurchased,
@@ -62,7 +68,8 @@ class Ticket {
       ticketId: map['ticketId'] as String,
       eventId: map['eventId'] as String,
       userId: map['userId'] as String,
-      price: map['price'] as double,
+      name: map['name'] as String,
+      price: map['price'] as int,
       status: map['status'] as String,
       datePurchased: Timestamp.fromMillisecondsSinceEpoch(map['datePurchased']),
       quantity: map['quantity'] as int,
@@ -88,6 +95,7 @@ class Ticket {
     return other.ticketId == ticketId &&
         other.eventId == eventId &&
         other.userId == userId &&
+        other.name == name &&
         other.price == price &&
         other.status == status &&
         other.datePurchased == datePurchased &&
@@ -97,7 +105,7 @@ class Ticket {
 }
 
 class TicketShortInfo {
-  final double price;
+  final int price;
   final String type;
   final String description;
   final String? ticketId;
@@ -108,7 +116,7 @@ class TicketShortInfo {
       this.ticketId});
 
   TicketShortInfo copyWith({
-    double? price,
+    int? price,
     String? type,
   }) {
     return TicketShortInfo(
@@ -127,7 +135,7 @@ class TicketShortInfo {
 
   factory TicketShortInfo.fromJson(Map<String, dynamic> map) {
     return TicketShortInfo(
-        price: map['price'] as double,
+        price: map['price'] as int,
         type: map['type'] as String,
         description: map['description'] as String,
         ticketId: map['ticketId'] as String);

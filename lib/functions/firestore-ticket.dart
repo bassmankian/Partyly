@@ -34,6 +34,7 @@ class FirestoreTicekts {
           ticketType: shortTicket.type,
           eventId: event.docId!,
           userId: user.docid!,
+          name: user.name,
           price: shortTicket.price,
           status: 'purcahsed',
           datePurchased: Timestamp.now(),

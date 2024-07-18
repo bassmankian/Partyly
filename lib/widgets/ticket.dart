@@ -10,14 +10,14 @@ class TicketCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.all(0),
+      margin: const EdgeInsets.all(0),
       color: containerColor,
       child: ListTile(
         subtitle: Text(ticket.description),
         leading: Container(
           decoration: const BoxDecoration(
               color: mainColor,
-              borderRadius: const BorderRadius.all(Radius.circular(8))),
+              borderRadius: BorderRadius.all(Radius.circular(8))),
           child: Padding(
               padding: const EdgeInsets.all(16), child: getIcon(ticket.type)),
         ),
@@ -26,7 +26,7 @@ class TicketCard extends StatelessWidget {
             ticket.type),
         trailing: Text(
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            '${ticket.price.toString()} TRY'),
+            '${ticket.price.toString()} ₺'),
       ),
     );
   }

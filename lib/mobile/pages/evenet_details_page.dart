@@ -24,14 +24,23 @@ List<int> selectedTicket = [];
 
 class _EventDetailsPageState extends State<EventDetailsPage> {
   @override
+  void dispose() {
+    selectedTicket.clear();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     late final event = widget.event;
     void onpressedButton() {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const CartDetailPage(),
-          ));
+      showModalBottomSheet(
+          isScrollControlled: true,
+          enableDrag: true,
+          showDragHandle: true,
+          context: context,
+          builder: (ctx) {
+            return CartDetailPage();
+          });
     }
 
     return Scaffold(
@@ -68,7 +77,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                         child: Text(
                           widget.event.category,
                           style: const TextStyle(
-                            fontSize: 18,
+                            fontSize: 14,
                             color: mainColor,
                             fontWeight: FontWeight.bold,
                           ),
@@ -246,7 +255,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                         height: 16,
                       ),
                       CustomElevatedButton(
-                          text: 'Continue', onPressed: onpressedButton)
+                          text: 'View cart', onPressed: onpressedButton)
                     ],
                   ),
                 ),
